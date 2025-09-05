@@ -1,23 +1,33 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ManageExpensesScreen from "./screens/manage-expenses-screen";
+import AllExpensesScreen from "./screens/all-expenses-screen";
+import RecentExpensesScreen from "./screens/recent-expenses-screen";
+
+const Stack = createNativeStackNavigator();
+const BottomTabs = createBottomTabNavigator();
+
+const OtherScreens = () => {
+  return (
+    <BottomTabs.Navigator>
+      <BottomTabs.Screen name="AllScreen" component={AllExpensesScreen} />
+      <BottomTabs.Screen name="RecentScreen" component={RecentExpensesScreen} />
+    </BottomTabs.Navigator>
+  );
+};
 
 export default function App() {
   return (
     <>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
+      <StatusBar style="auto" />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="OtherScreens" component={OtherScreens} />
+          <Stack.Screen name="ManageScreen" component={ManageExpensesScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
