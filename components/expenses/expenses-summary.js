@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
   sum: {
     fontFamily: "samim",
     fontSize: 16,
-    fontWeight: "bold",
     color: GlobalStyles.colors.primary500,
   },
 });
