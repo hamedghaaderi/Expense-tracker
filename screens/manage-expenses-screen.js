@@ -1,11 +1,77 @@
-import { Text } from "react-native";
+import { useLayoutEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import IconBTN from "../components/ui/icon-btn";
+import GlobalStyles from "../constants/colors";
+import BTN from "../components/ui/btn";
 
-const ManageExpensesScreen = () => {
+const ManageExpensesScreen = ({ route, navigation }) => {
+  const id = route.params?.expenseId;
+  const isEditing = !!id;
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: isEditing ? "ویرایش مخراج" : "اضافه کردن مخارج",
+    });
+  }, [navigation, isEditing]);
+
+  const deleteHandler = () => {
+    navigation.goBack();
+  };
+  const cancelHandler = () => {
+    navigation.goBack();
+  };
+  const confirmHandler = () => {
+    navigation.goBack();
+  };
+
   return (
     <>
-      <Text>asdasdasdasd</Text>
+      <View style={styles.container}>
+        <View style={styles.buttons}>
+          <BTN style={styles.button} mode="flat" onPress={cancelHandler}>
+            انصراف
+          </BTN>
+          <BTN style={styles.button} onPress={confirmHandler}>
+            {isEditing ? "به روز رسانی" : "اضافه کردن"}
+          </BTN>
+        </View>
+        {isEditing && (
+          <View style={styles.deleteContainer}>
+            <IconBTN
+              icon="trash"
+              color={GlobalStyles.colors.error500}
+              size={36}
+              onPress={deleteHandler}
+            />
+          </View>
+        )}
+      </View>
     </>
   );
 };
 
 export default ManageExpensesScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 24,
+    backgroundColor: GlobalStyles.colors.primary800,
+  },
+  deleteContainer: {
+    marginTop: 16,
+    paddingTop: 8,
+    borderTopWidth: 2,
+    borderTopColor: GlobalStyles.colors.primary200,
+    alignItems: "center",
+  },
+  button: {
+    minWidth: 120,
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+  },
+});

@@ -8,6 +8,7 @@ import RecentExpensesScreen from "./screens/recent-expenses-screen";
 import GlobalStyles from "./constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
+import IconBTN from "./components/ui/icon-btn";
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -15,14 +16,24 @@ const BottomTabs = createBottomTabNavigator();
 const OtherScreens = () => {
   return (
     <BottomTabs.Navigator
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
         headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
         headerTintColor: "white",
         tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
         tabBarLabelStyle: { fontFamily: "samim", fontSize: 15 },
         tabBarLabelPosition: "beside-icon",
-      }}
+        headerRight: ({ tintColor }) => (
+          <IconBTN
+            icon="add"
+            size={24}
+            color={tintColor}
+            onPress={() => {
+              navigation.navigate("ManageScreen");
+            }}
+          />
+        ),
+      })}
     >
       <BottomTabs.Screen
         name="AllScreen"
@@ -57,7 +68,12 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+            headerTintColor: "white",
+          }}
+        >
           <Stack.Screen
             name="OtherScreens"
             component={OtherScreens}
@@ -67,7 +83,7 @@ export default function App() {
             name="ManageScreen"
             component={ManageExpensesScreen}
             options={{
-              titleL: "مدیریت مخارج",
+              presentation: "modal",
             }}
           />
         </Stack.Navigator>
