@@ -1,9 +1,10 @@
-import { Text } from "react-native";
+import ExpensesOutput from "../components/expenses/expenses-output";
+import EXPENSES from "../fake-data/expenses";
 
 const RecentExpensesScreen = () => {
   return (
     <>
-      <Text>asdasdasdasd</Text>
+      <ExpensesOutput expenses={EXPENSES} expensesPeriod="هفت روز گذشته" />
     </>
   );
 };
