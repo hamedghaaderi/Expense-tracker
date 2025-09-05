@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 const ExpensesItem = ({ expense }) => {
   const { navigate } = useNavigation();
   const pressHandler = () => {
-    navigate("ManageScreen");
+    navigate("ManageScreen", { expenseId: expense.id });
   };
 
   return (

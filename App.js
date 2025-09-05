@@ -68,7 +68,12 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+            headerTintColor: "white",
+          }}
+        >
           <Stack.Screen
             name="OtherScreens"
             component={OtherScreens}
@@ -78,7 +83,7 @@ export default function App() {
             name="ManageScreen"
             component={ManageExpensesScreen}
             options={{
-              title: "مدیریت مخارج",
+              presentation: "modal",
             }}
           />
         </Stack.Navigator>
