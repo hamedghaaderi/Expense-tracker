@@ -1,60 +1,31 @@
 import { StyleSheet, Text, View } from "react-native";
 import Input from "./input";
 import GlobalStyles from "../../constants/colors";
-import { useState } from "react";
 import BTN from "../ui/btn";
+import { Controller, useForm } from "react-hook-form";
 
 const ExpenseForm = ({ submitLabel, onCancel, onSubmit, defaultValues }) => {
-  const [inputs, setInputs] = useState({
-    amount: {
-      value: defaultValues ? defaultValues.amount.toString() : "",
-      isValid: true,
-    },
-    description: {
-      value: defaultValues ? defaultValues.description : "",
-      isValid: true,
-    },
-    date: {
-      value: defaultValues ? defaultValues.date.toISOString().slice(0, 10) : "",
-      isValid: true,
+  const {
+    control,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      amount: defaultValues ? defaultValues.amount.toString() : "",
+      description: defaultValues ? defaultValues.description : "",
+      date: defaultValues ? defaultValues.date.toISOString().slice(0, 10) : "",
     },
   });
 
-  const inputHandler = (identifier, enteredValue) => {
-    setInputs((_prevValues) => {
-      return {
-        ..._prevValues,
-        [identifier]: { value: enteredValue, isVallid: true },
-      };
-    });
-  };
-
-  const submitHandler = () => {
+  const submitHandler = (data) => {
     const expenseOBJ = {
-      amount: +inputs.amount.value,
-      date: new Date(inputs.date.value),
-      description: inputs.description.value,
+      amount: +data.amount,
+      date: new Date(data.date),
+      description: data.description,
     };
 
-    const isAmountValid =
-      expenseOBJ.amount > 0 && typeof expenseOBJ.amount === "number";
-    const isDateValid = expenseOBJ.date.toString() !== "Invalid Date";
-    const isDescriptionValid = expenseOBJ.description.trim().length > 0;
-
-    if (isAmountValid && isDescriptionValid && isDateValid) {
-      onSubmit(expenseOBJ);
-    } else {
-      setInputs((_prevValues) => {
-        return {
-          amount: { value: _prevValues.amount.value, isValid: isAmountValid },
-          date: { value: _prevValues.date.value, isValid: isDateValid },
-          description: {
-            value: _prevValues.description.value,
-            isValid: isDescriptionValid,
-          },
-        };
-      });
-    }
+    onSubmit(expenseOBJ);
   };
 
   return (
@@ -62,42 +33,74 @@ const ExpenseForm = ({ submitLabel, onCancel, onSubmit, defaultValues }) => {
       <View style={styles.form}>
         <Text style={styles.title}>مخارج تو</Text>
         <View style={styles.inputsRow}>
-          <Input
-            label="قیمت"
-            style={styles.rowInput}
-            isInvalid={!inputs.amount.isValid}
-            inputConfig={{
-              keyboardType: "decimal-pad",
-              onChangeText: inputHandler.bind(this, "amount"),
-              value: inputs.amount.value,
+          <Controller
+            name="amount"
+            control={control}
+            rules={{
+              required: true,
+              pattern: /^(?:[1-9][0-9]*|[۱-۹][۰-۹]*)$/,
+            }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Input
+                  label="قیمت"
+                  isInvalid={errors.amount}
+                  style={styles.rowInput}
+                  inputConfig={{
+                    keyboardType: "decimal-pad",
+                    onChangeText: onChange,
+                    value: value,
+                  }}
+                />
+              );
             }}
           />
-          <Input
-            label="تاریخ"
-            style={styles.rowInput}
-            isInvalid={!inputs.date.isValid}
-            inputConfig={{
-              placeholder: "YYYY-MM-DD",
-              keyboardType: "decimal-pad",
-              maxLength: 10,
-              onChangeText: inputHandler.bind(this, "date"),
-              value: inputs.date.value,
+          <Controller
+            name="date"
+            control={control}
+            rules={{
+              required: true,
+              pattern:
+                /^([0-9\u06F0-\u06F9]{4})-(0[1-9]|1[0-2]|۰[۱-۹]|۱[۰-۲])-(0[1-9]|[12][0-9]|3[01]|۰[۱-۹]|[۱۲][۰-۹]|۳[۰-۱])$/,
+            }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Input
+                  label="تاریخ"
+                  isInvalid={errors.date}
+                  style={styles.rowInput}
+                  inputConfig={{
+                    placeholder: "YYYY-MM-DD",
+                    keyboardType: "decimal-pad",
+                    maxLength: 10,
+                    onChangeText: onChange,
+                    value: value,
+                  }}
+                />
+              );
             }}
           />
         </View>
-        <Input
-          label="توضیخات"
-          isInvalid={!inputs.description.isValid}
-          inputConfig={{
-            multiline: true,
-            autoCorrect: false,
-            onChangeText: inputHandler.bind(this, "description"),
-            value: inputs.description.value,
+        <Controller
+          name="description"
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Input
+                label="توضیخات"
+                isInvalid={errors.description}
+                inputConfig={{
+                  multiline: true,
+                  autoCorrect: false,
+                  onChangeText: onChange,
+                  value: value,
+                }}
+              />
+            );
           }}
         />
-        {(!inputs.amount.isValid ||
-          !inputs.date.isValid ||
-          !inputs.description.isValid) && (
+        {(errors.amount || errors.date || errors.description) && (
           <Text style={styles.invalidText}>
             مقادیر نامعتبر است لطفا مجددا بررسی کنید
           </Text>
@@ -106,7 +109,7 @@ const ExpenseForm = ({ submitLabel, onCancel, onSubmit, defaultValues }) => {
           <BTN style={styles.button} mode="flat" onPress={onCancel}>
             انصراف
           </BTN>
-          <BTN style={styles.button} onPress={submitHandler}>
+          <BTN style={styles.button} onPress={handleSubmit(submitHandler)}>
             {submitLabel}
           </BTN>
         </View>
