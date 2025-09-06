@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import IconBTN from "../components/ui/icon-btn";
 import GlobalStyles from "../constants/colors";
 import BTN from "../components/ui/btn";
+import useExpenses from "../utils/expenses-ctx";
 
 const ManageExpensesScreen = ({ route, navigation }) => {
   const id = route.params?.expenseId;
@@ -10,17 +11,33 @@ const ManageExpensesScreen = ({ route, navigation }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: isEditing ? "ویرایش مخراج" : "اضافه کردن مخارج",
+      title: isEditing ? "ویرایش مخارج" : "اضافه کردن مخارج",
     });
   }, [navigation, isEditing]);
 
+  const { addExpense, updateExpense, deleteExpense } = useExpenses();
+
   const deleteHandler = () => {
+    deleteExpense(id);
     navigation.goBack();
   };
   const cancelHandler = () => {
     navigation.goBack();
   };
   const confirmHandler = () => {
+    if (isEditing) {
+      updateExpense(id, {
+        description: "44444",
+        amount: 111111,
+        date: new Date("2022-05-20"),
+      });
+    } else {
+      addExpense({
+        description: "11111",
+        amount: 222222,
+        date: new Date("2025-10-20"),
+      });
+    }
     navigation.goBack();
   };
 
