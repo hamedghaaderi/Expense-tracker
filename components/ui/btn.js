@@ -29,22 +29,26 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     backgroundColor: GlobalStyles.colors.primary500,
+    borderWidth: 2,
+    borderColor: GlobalStyles.colors.primary500,
   },
   flat: {
     backgroundColor: "transparent",
+    borderWidth: 2,
+    borderColor: GlobalStyles.colors.primary500,
+    borderRadius: 4,
   },
   buttonText: {
-    color: "white",
+    color: GlobalStyles.colors.primary50,
     textAlign: "center",
     fontFamily: "samim",
   },
   flatText: {
-    color: GlobalStyles.colors.primary200,
+    color: GlobalStyles.colors.primary50,
     fontFamily: "samim",
   },
   pressed: {
     opacity: 0.75,
-    backgroundColor: GlobalStyles.colors.primary100,
     borderRadius: 4,
   },
 });

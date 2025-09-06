@@ -19,10 +19,11 @@ const OtherScreens = () => {
       screenOptions={({ navigation }) => ({
         headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
         headerTintColor: "white",
-        tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+        headerTitleStyle: { fontFamily: "samim" },
+        tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500, height: "8%" },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        tabBarLabelStyle: { fontFamily: "samim", fontSize: 15 },
-        tabBarLabelPosition: "beside-icon",
+        tabBarInactiveTintColor: GlobalStyles.colors.primary50,
+        tabBarLabelStyle: { fontFamily: "samim", fontSize: 15, marginBottom: 8 },
         headerRight: ({ tintColor }) => (
           <IconBTN
             icon="add"
@@ -84,6 +85,7 @@ export default function App() {
             component={ManageExpensesScreen}
             options={{
               presentation: "modal",
+              headerTitleStyle: { fontFamily: "samim" },
             }}
           />
         </Stack.Navigator>
