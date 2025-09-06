@@ -4,6 +4,7 @@ import IconBTN from "../components/ui/icon-btn";
 import GlobalStyles from "../constants/colors";
 import BTN from "../components/ui/btn";
 import useExpenses from "../utils/expenses-ctx";
+import ExpenseForm from "../components/manage expense/expense-form";
 
 const ManageExpensesScreen = ({ route, navigation }) => {
   const id = route.params?.expenseId;
@@ -44,6 +45,7 @@ const ManageExpensesScreen = ({ route, navigation }) => {
   return (
     <>
       <View style={styles.container}>
+        <ExpenseForm />
         <View style={styles.buttons}>
           <BTN style={styles.button} mode="flat" onPress={cancelHandler}>
             انصراف
