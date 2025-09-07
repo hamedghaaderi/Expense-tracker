@@ -10,21 +10,31 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import IconBTN from "./components/ui/icon-btn";
 import ExpensesProvider from "./services/expenses-provider";
+import { useWindowDimensions } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 
 const OtherScreens = () => {
+  const { width } = useWindowDimensions();
+
   return (
     <BottomTabs.Navigator
       screenOptions={({ navigation }) => ({
         headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
         headerTintColor: "white",
         headerTitleStyle: { fontFamily: "samim" },
-        tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500, height: "8%" },
+        tabBarStyle: {
+          backgroundColor: GlobalStyles.colors.primary500,
+          height: width > 500 ? "15%" : "8%",
+        },
         tabBarActiveTintColor: GlobalStyles.colors.accent500,
         tabBarInactiveTintColor: GlobalStyles.colors.primary50,
-        tabBarLabelStyle: { fontFamily: "samim", fontSize: 15, marginBottom: 8 },
+        tabBarLabelStyle: {
+          fontFamily: "samim",
+          fontSize: 15,
+          marginBottom: width > 500 ? 0 : 8,
+        },
         headerRight: ({ tintColor }) => (
           <IconBTN
             icon="add"

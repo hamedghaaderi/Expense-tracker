@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import IconBTN from "../components/ui/icon-btn";
 import GlobalStyles from "../constants/colors";
 import useExpenses from "../utils/expenses-ctx";
@@ -37,24 +37,29 @@ const ManageExpensesScreen = ({ route, navigation }) => {
 
   return (
     <>
-      <View style={styles.container}>
-        <ExpenseForm
-          submitLabel={isEditing ? "به روز رسانی" : "اضافه کردن"}
-          onCancel={cancelHandler}
-          onSubmit={confirmHandler}
-          defaultValues={selectedExpense}
-        />
-        {isEditing && (
-          <View style={styles.deleteContainer}>
-            <IconBTN
-              icon="trash"
-              color={GlobalStyles.colors.error500}
-              size={36}
-              onPress={deleteHandler}
-            />
-          </View>
-        )}
-      </View>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.container}>
+          <ExpenseForm
+            submitLabel={isEditing ? "به روز رسانی" : "اضافه کردن"}
+            onCancel={cancelHandler}
+            onSubmit={confirmHandler}
+            defaultValues={selectedExpense}
+          />
+          {isEditing && (
+            <View style={styles.deleteContainer}>
+              <IconBTN
+                icon="trash"
+                color={GlobalStyles.colors.error500}
+                size={36}
+                onPress={deleteHandler}
+              />
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </>
   );
 };
@@ -62,6 +67,9 @@ const ManageExpensesScreen = ({ route, navigation }) => {
 export default ManageExpensesScreen;
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     padding: 24,
