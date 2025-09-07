@@ -11,9 +11,19 @@ import { useFonts } from "expo-font";
 import IconBTN from "./components/ui/icon-btn";
 import ExpensesProvider from "./services/expenses-provider";
 import { useWindowDimensions } from "react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60000, // 1 minute
+      gcTime: 2 * 60000, // 2 minutes
+    },
+  },
+});
 
 const OtherScreens = () => {
   const { width } = useWindowDimensions();
@@ -79,30 +89,34 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <ExpensesProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-              headerTintColor: "white",
-              headerTitleStyle: { fontFamily: "samim" },
-            }}
-          >
-            <Stack.Screen
-              name="OtherScreens"
-              component={OtherScreens}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ManageScreen"
-              component={ManageExpensesScreen}
-              options={{
-                presentation: "modal",
+      <QueryClientProvider client={queryClient}>
+        <ExpensesProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
+                headerStyle: {
+                  backgroundColor: GlobalStyles.colors.primary500,
+                },
+                headerTintColor: "white",
+                headerTitleStyle: { fontFamily: "samim" },
               }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </ExpensesProvider>
+            >
+              <Stack.Screen
+                name="OtherScreens"
+                component={OtherScreens}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ManageScreen"
+                component={ManageExpensesScreen}
+                options={{
+                  presentation: "modal",
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ExpensesProvider>
+      </QueryClientProvider>
     </>
   );
 }

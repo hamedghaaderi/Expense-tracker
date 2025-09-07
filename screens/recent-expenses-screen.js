@@ -1,6 +1,5 @@
 import ExpensesOutput from "../components/expenses/expenses-output";
-import EXPENSES from "../fake-data/expenses";
-import { getDateMinusDays, getRecentDaysDate } from "../utils/date";
+import { getRecentDaysDate } from "../utils/date";
 import useExpenses from "../utils/expenses-ctx";
 
 const RecentExpensesScreen = () => {
