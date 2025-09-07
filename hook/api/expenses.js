@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import BaseUrl from "../../api/api-config";
 
 export const useGetExpenses = () => {
-  const { data, status } = useQuery({
+  const { data, status, refetch } = useQuery({
     queryKey: ["all-expenses"],
     queryFn: async () => {
       const response = await BaseUrl.get("/rest/v1/expenses");
@@ -16,5 +16,5 @@ export const useGetExpenses = () => {
     },
   });
 
-  return { data, status };
+  return { data, status, refetch };
 };
